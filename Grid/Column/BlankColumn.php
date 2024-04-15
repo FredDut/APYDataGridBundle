@@ -14,7 +14,7 @@ namespace APY\DataGridBundle\Grid\Column;
 
 class BlankColumn extends Column
 {
-    public function __initialize(array $params)
+    public function __initialize(array $params): void
     {
         $params['filterable'] = false;
         $params['sortable'] = false;

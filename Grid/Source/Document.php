@@ -82,7 +82,7 @@ class Document extends Source
         $this->group = $group;
     }
 
-    public function initialise($container)
+    public function initialise($container): void
     {
         $this->manager = $container->get('doctrine.odm.mongodb.document_manager');
         $this->odmMetadata = $this->manager->getClassMetadata($this->documentName);
@@ -96,7 +96,7 @@ class Document extends Source
     /**
      * @param \APY\DataGridBundle\Grid\Columns $columns
      */
-    public function getColumns($columns)
+    public function getColumns($columns): void
     {
         foreach ($this->metadata->getColumnsFromMapping($columns) as $column) {
             $columns->addColumn($column);
@@ -159,7 +159,7 @@ class Document extends Source
      *
      * @param QueryBuilder $queryBuilder
      */
-    public function initQueryBuilder(QueryBuilder $queryBuilder)
+    public function initQueryBuilder(QueryBuilder $queryBuilder): void
     {
         $this->query = clone $queryBuilder;
     }
@@ -437,7 +437,7 @@ class Document extends Source
         return $result;
     }
 
-    public function populateSelectFilters($columns, $loop = false)
+    public function populateSelectFilters($columns, $loop = false): void
     {
         $queryFromSource = $this->getQueryBuilder();
         $queryFromQuery = clone $this->query;
@@ -517,7 +517,7 @@ class Document extends Source
      *
      * @throws \Exception
      */
-    public function delete(array $ids)
+    public function delete(array $ids): void
     {
         $repository = $this->getRepository();
 

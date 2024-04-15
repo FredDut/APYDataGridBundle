@@ -18,6 +18,7 @@ use APY\DataGridBundle\Grid\Helper\ColumnsIterator;
 use APY\DataGridBundle\Grid\Mapping\Driver\DriverInterface;
 use APY\DataGridBundle\Grid\Row;
 use APY\DataGridBundle\Grid\Rows;
+use Psr\Container\ContainerInterface;
 
 abstract class Source implements DriverInterface
 {
@@ -30,7 +31,7 @@ abstract class Source implements DriverInterface
     /**
      * @param \Doctrine\ODM\MongoDB\Query\Builder $queryBuilder
      */
-    public function prepareQuery($queryBuilder)
+    public function prepareQuery($queryBuilder): void
     {
         if (is_callable($this->prepareQueryCallback)) {
             call_user_func($this->prepareQueryCallback, $queryBuilder);
@@ -104,7 +105,7 @@ abstract class Source implements DriverInterface
      *
      * @param  $container
      */
-    abstract public function initialise($container);
+    abstract public function initialise(ContainerInterface $container);
 
     /**
      * @abstract
@@ -469,7 +470,7 @@ abstract class Source implements DriverInterface
         return $rows;
     }
 
-    public function populateSelectFiltersFromData($columns, $loop = false)
+    public function populateSelectFiltersFromData($columns, $loop = false): void
     {
         /* @var $column Column */
         foreach ($columns as $column) {

@@ -22,6 +22,9 @@
 
         <service id="grid" class="%grid.class%" shared="false" public="true">
             <argument type="service" id="service_container" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="router" />
+            <argument type="service" id="request_stack" />
             <argument type="service" id="security.authorization_checker" />
             <argument type="service" id="twig" />
             <call method="setLimits">
@@ -47,9 +50,11 @@
         <service id="%grid.class%" alias="grid" public="true">
         </service>
 
-        <service id="grid.manager" class="%grid.manager.class%">
+        <service id="grid.manager" class="%grid.manager.class%" public="true">
             <argument type="service" id="service_container" />
             <argument type="service" id="twig" />
+        </service>
+        <service id="%grid.manager.class%" alias="grid.manager" public="true">
         </service>
 
         <service id="grid.metadata.driver.annotation" class="APY\DataGridBundle\Grid\Mapping\Driver\Annotation">

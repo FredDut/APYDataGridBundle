@@ -23,13 +23,13 @@ class ColumnTitleAnnotationTranslationExtractor implements FileVisitorInterface,
      */
     private $container;
 
-    public function beforeTraverse(array $nodes)
+    public function beforeTraverse(array $nodes): void
     {
         $this->annotated = false;
         $this->parsedClassName = null;
     }
 
-    public function enterNode(\PHPParser_Node $node)
+    public function enterNode(\PHPParser_Node $node): void
     {
         if ($node instanceof \PHPParser_Node_Stmt_Namespace) {
             // Base namespace
@@ -56,7 +56,7 @@ class ColumnTitleAnnotationTranslationExtractor implements FileVisitorInterface,
     {
     }
 
-    public function visitPhpFile(\SplFileInfo $file, MessageCatalogue $catalogue, array $ast)
+    public function visitPhpFile(\SplFileInfo $file, MessageCatalogue $catalogue, array $ast): void
     {
         $this->catalogue = $catalogue;
 
@@ -91,7 +91,7 @@ class ColumnTitleAnnotationTranslationExtractor implements FileVisitorInterface,
     /**
      * {@inheritdoc}
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

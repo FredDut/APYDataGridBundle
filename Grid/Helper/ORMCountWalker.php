@@ -34,7 +34,7 @@ class ORMCountWalker extends TreeWalkerAdapter
     /**
      * Distinct mode hint name.
      */
-    const HINT_DISTINCT = 'doctrine_paginator.distinct';
+    public const HINT_DISTINCT = 'doctrine_paginator.distinct';
 
     /**
      * Walks down a SelectStatement AST node, modifying it to retrieve a COUNT.

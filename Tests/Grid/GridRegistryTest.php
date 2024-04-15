@@ -18,7 +18,7 @@ class GridRegistryTest extends TestCase
 {
     private \APY\DataGridBundle\Grid\GridRegistry $registry;
 
-    public function testAddTypeAlreadyExists()
+    public function testAddTypeAlreadyExists(): void
     {
         $this->expectException(TypeAlreadyExistsException::class);
 
@@ -27,26 +27,26 @@ class GridRegistryTest extends TestCase
         $this->registry->addType($type);
     }
 
-    public function testAddType()
+    public function testAddType(): void
     {
         $this->assertFalse($this->registry->hasType('foo'));
         $this->registry->addType($this->createTypeMock());
         $this->assertTrue($this->registry->hasType('foo'));
     }
 
-    public function testAddIsFluent()
+    public function testAddIsFluent(): void
     {
         $registry = $this->registry->addType($this->createTypeMock());
         $this->assertSame($registry, $this->registry);
     }
 
-    public function testGetTypeUnknown()
+    public function testGetTypeUnknown(): void
     {
         $this->expectException(TypeNotFoundException::class);
         $this->registry->getType('foo');
     }
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $expectedType = $this->createTypeMock();
 
@@ -54,7 +54,7 @@ class GridRegistryTest extends TestCase
         $this->assertSame($expectedType, $this->registry->getType('foo'));
     }
 
-    public function testAddColumnAlreadyExists()
+    public function testAddColumnAlreadyExists(): void
     {
         $this->expectException(ColumnAlreadyExistsException::class);
 
@@ -64,26 +64,26 @@ class GridRegistryTest extends TestCase
         $this->registry->addColumn($type);
     }
 
-    public function testAddColumnType()
+    public function testAddColumnType(): void
     {
         $this->assertFalse($this->registry->hasColumn('type'));
         $this->registry->addColumn($this->createColumnTypeMock());
         $this->assertTrue($this->registry->hasColumn('type'));
     }
 
-    public function testAddColumnTypeIsFluent()
+    public function testAddColumnTypeIsFluent(): void
     {
         $registry = $this->registry->addColumn($this->createColumnTypeMock());
         $this->assertSame($registry, $this->registry);
     }
 
-    public function testGetColumnTypeUnknown()
+    public function testGetColumnTypeUnknown(): void
     {
         $this->expectException(ColumnNotFoundException::class);
         $this->registry->getColumn('type');
     }
 
-    public function testGetColumnType()
+    public function testGetColumnType(): void
     {
         $expectedColumnType = $this->createColumnTypeMock();
 

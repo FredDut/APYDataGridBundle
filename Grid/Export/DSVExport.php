@@ -29,13 +29,13 @@ class DSVExport extends Export
 
     public function __construct($title, $fileName = 'export', $params = [], $charset = 'UTF-8')
     {
-        $this->delimiter = isset($params['delimiter']) ? $params['delimiter'] : $this->delimiter;
-        $this->withBOM = isset($params['withBOM']) ? $params['withBOM'] : $this->withBOM;
+        $this->delimiter = $params['delimiter'] ?? $this->delimiter;
+        $this->withBOM = $params['withBOM'] ?? $this->withBOM;
 
         parent::__construct($title, $fileName, $params, $charset);
     }
 
-    public function computeData(Grid $grid)
+    public function computeData(Grid $grid): void
     {
         $data = $this->getFlatGridData($grid);
 

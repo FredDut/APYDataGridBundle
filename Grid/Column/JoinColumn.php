@@ -18,7 +18,7 @@ class JoinColumn extends TextColumn
 
     protected $dataJunction = self::DATA_DISJUNCTION;
 
-    public function __initialize(array $params)
+    public function __initialize(array $params): void
     {
         parent::__initialize($params);
 
@@ -29,7 +29,7 @@ class JoinColumn extends TextColumn
         $this->setIsManualField(true);
     }
 
-    public function setJoinColumns(array $columns)
+    public function setJoinColumns(array $columns): void
     {
         $this->joinColumns = $columns;
     }

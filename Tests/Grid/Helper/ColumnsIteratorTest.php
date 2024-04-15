@@ -11,7 +11,7 @@ class ColumnsIteratorTest extends TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $iterator;
 
-    public function testAcceptAnyColumn()
+    public function testAcceptAnyColumn(): void
     {
         $this->setUpMocks();
         $columnsIterator = new ColumnsIterator($this->iterator, false);
@@ -19,7 +19,7 @@ class ColumnsIteratorTest extends TestCase
         $this->assertTrue($columnsIterator->accept());
     }
 
-    public function testAcceptSourceColumnThatsVisibile()
+    public function testAcceptSourceColumnThatsVisibile(): void
     {
         $this->setUpMocks(true);
         $columnsIterator = new ColumnsIterator($this->iterator, true);
@@ -27,7 +27,7 @@ class ColumnsIteratorTest extends TestCase
         $this->assertTrue($columnsIterator->accept());
     }
 
-    public function testNotAcceptSourceColumnThatsNotVisibile()
+    public function testNotAcceptSourceColumnThatsNotVisibile(): void
     {
         $this->setUpMocks(false);
         $columnsIterator = new ColumnsIterator($this->iterator, true);

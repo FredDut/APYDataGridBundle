@@ -13,7 +13,7 @@ class ActionsColumnTest extends TestCase
 {
     private \APY\DataGridBundle\Grid\Column\ActionsColumn $column;
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $columnId = 'columnId';
         $columnTitle = 'columnTitle';
@@ -30,17 +30,17 @@ class ActionsColumnTest extends TestCase
         $this->assertEquals(true, $column->isFilterable());
     }
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals('actions', $this->column->getType());
     }
 
-    public function testGetFilterType()
+    public function testGetFilterType(): void
     {
         $this->assertEquals('actions', $this->column->getFilterType());
     }
 
-    public function testGetActionsToRender()
+    public function testGetActionsToRender(): void
     {
         $row = $this->createMock(Row::class);
 
@@ -57,7 +57,7 @@ class ActionsColumnTest extends TestCase
         $this->assertEquals([1 => $rowAction2], $column->getActionsToRender($row));
     }
 
-    public function testGetRowActions()
+    public function testGetRowActions(): void
     {
         $rowAction1 = $this->createMock(RowAction::class);
         $rowAction2 = $this->createMock(RowAction::class);
@@ -69,7 +69,7 @@ class ActionsColumnTest extends TestCase
         $this->assertEquals([$rowAction1, $rowAction2], $column->getRowActions());
     }
 
-    public function testSetRowActions()
+    public function testSetRowActions(): void
     {
         $rowAction1 = $this->createMock(RowAction::class);
         $rowAction2 = $this->createMock(RowAction::class);
@@ -79,24 +79,24 @@ class ActionsColumnTest extends TestCase
         $this->assertEquals([$rowAction1, $rowAction2], $column->getRowActions());
     }
 
-    public function testIsNotVisibleIfExported()
+    public function testIsNotVisibleIfExported(): void
     {
         $isExported = true;
         $this->assertFalse($this->column->isVisible($isExported));
     }
 
-    public function testIsVisibleIfNotExportedAndNoAuthChecker()
+    public function testIsVisibleIfNotExportedAndNoAuthChecker(): void
     {
         $this->assertTrue($this->column->isVisible());
     }
 
-    public function testIsVisibleIfNotExportedNoAuthCheckerAndNotRole()
+    public function testIsVisibleIfNotExportedNoAuthCheckerAndNotRole(): void
     {
         $this->column->setAuthorizationChecker($this->createMock(AuthorizationCheckerInterface::class));
         $this->assertTrue($this->column->isVisible());
     }
 
-    public function testIsVisibleIfAuthCheckerIsGranted()
+    public function testIsVisibleIfAuthCheckerIsGranted(): void
     {
         $role = 'ROLE_USER';
         $this->column->setRole($role);
@@ -108,7 +108,7 @@ class ActionsColumnTest extends TestCase
         $this->assertTrue($this->column->isVisible());
     }
 
-    public function testIsNotVisibleIfAuthCheckerIsNotGranted()
+    public function testIsNotVisibleIfAuthCheckerIsNotGranted(): void
     {
         $role = 'ROLE_USER';
         $this->column->setRole($role);
@@ -120,7 +120,7 @@ class ActionsColumnTest extends TestCase
         $this->assertFalse($this->column->isVisible());
     }
 
-    public function testGetPrimaryFieldAsRouteParametersIfRouteParametersNotSetted()
+    public function testGetPrimaryFieldAsRouteParametersIfRouteParametersNotSetted(): void
     {
         $row = $this->createMock(Row::class);
         $row->method('getPrimaryField')->willReturn('id');
@@ -132,7 +132,7 @@ class ActionsColumnTest extends TestCase
         $this->assertEquals(['id' => 1], $this->column->getRouteParameters($row, $rowAction));
     }
 
-    public function testGetRouteParameters()
+    public function testGetRouteParameters(): void
     {
         $row = $this->createMock(Row::class);
         $row

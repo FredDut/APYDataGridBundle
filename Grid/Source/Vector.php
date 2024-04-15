@@ -64,7 +64,7 @@ class Vector extends Source
         $this->setColumns($columns);
     }
 
-    public function initialise($container)
+    public function initialise($container): void
     {
         if (!empty($this->data)) {
             $this->guessColumns();
@@ -156,7 +156,7 @@ class Vector extends Source
     /**
      * @param \APY\DataGridBundle\Grid\Columns $columns
      */
-    public function getColumns($columns)
+    public function getColumns($columns): void
     {
         $token = empty($this->id); //makes the first column primary by default
 
@@ -211,7 +211,7 @@ class Vector extends Source
         return $this->executeFromData($columns, $page, $limit, $maxResults);
     }
 
-    public function populateSelectFilters($columns, $loop = false)
+    public function populateSelectFilters($columns, $loop = false): void
     {
         $this->populateSelectFiltersFromData($columns, $loop);
     }
@@ -223,7 +223,7 @@ class Vector extends Source
 
     public function getHash()
     {
-        return __CLASS__ . md5(implode('', array_map(fn($c) => $c->getId(), $this->columns)));
+        return self::class . md5(implode('', array_map(fn($c) => $c->getId(), $this->columns)));
     }
 
     /**
@@ -231,7 +231,7 @@ class Vector extends Source
      *
      * @param mixed $id either a string or an array of strings
      */
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
@@ -251,7 +251,7 @@ class Vector extends Source
      *
      * @throws \InvalidArgumentException
      */
-    public function setData($data)
+    public function setData($data): void
     {
         $this->data = $data;
 

@@ -22,7 +22,7 @@ use Twig\Environment;
 
 abstract class Export implements ExportInterface, ContainerAwareInterface
 {
-    const DEFAULT_TEMPLATE = '@APYDataGrid/blocks.html.twig';
+    public const DEFAULT_TEMPLATE = '@APYDataGrid/blocks.html.twig';
 
     protected $title;
 
@@ -84,7 +84,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
         return $this;
     }
 
-    public function setTwig(Environment $twig) 
+    public function setTwig(Environment $twig): void 
     {
         $this->twig = $twig;
     }

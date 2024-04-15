@@ -220,7 +220,7 @@ class GridManager implements IteratorAggregate, Countable
         return $this->routeUrl;
     }
 
-    public function setRouteUrl($routeUrl)
+    public function setRouteUrl($routeUrl): void
     {
         $this->routeUrl = $routeUrl;
     }

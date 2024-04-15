@@ -14,7 +14,7 @@ namespace APY\DataGridBundle\Grid\Column;
 
 class BooleanColumn extends Column
 {
-    public function __initialize(array $params)
+    public function __initialize(array $params): void
     {
         $params['filter'] = 'select';
         $params['selectFrom'] = 'values';

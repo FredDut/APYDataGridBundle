@@ -16,7 +16,7 @@ use APY\DataGridBundle\Grid\Filter;
 
 class SimpleArrayColumn extends Column
 {
-    public function __initialize(array $params)
+    public function __initialize(array $params): void
     {
         parent::__initialize($params);
 
@@ -73,7 +73,7 @@ class SimpleArrayColumn extends Column
 
         // @todo: when it has an array as value?
         $return = [];
-        if (is_array($values) || $values instanceof \Traversable) {
+        if (is_iterable($values)) {
             foreach ($values as $key => $value) {
                 if (!is_array($value) && isset($this->values[(string) $value])) {
                     $value = $this->values[$value];

@@ -26,7 +26,7 @@ class Manager
         $this->drivers = new DriverHeap();
     }
 
-    public function addDriver($driver, $priority)
+    public function addDriver($driver, $priority): void
     {
         $this->drivers->insert($driver, $priority);
     }

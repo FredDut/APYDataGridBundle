@@ -24,12 +24,17 @@ use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Source\Source;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\TemplateWrapper;
 use Twig\Environment ;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Routing\RouterInterface as RoutingRouterInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\ORM\EntityManager;
 
 class Grid implements GridInterface
 {
@@ -64,245 +69,162 @@ class Grid implements GridInterface
     public const HAS_FILTER_NO_REQUEST_HANDLED_EX_MSG = 'hasFilters method is only available in the manipulate callback function or after the call of the method isRedirected of the grid.';
     public const TWEAK_NOT_DEFINED_EX_MSG = 'Tweak %s is not defined.';
 
-    /**
-     * @var Container
-     */
-    protected $container;
+    protected Container $container;
 
-    /**
-     * @var \Symfony\Component\Routing\Router
-     */
-    protected $router;
+    protected EntityManager $doctrine;
 
-    /**
-     * @var \Symfony\Component\HttpFoundation\Session\Session;
-     */
-    protected $session;
+    protected Router $router;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected Session $session;
+
+     protected Request $request;
 
     protected AuthorizationCheckerInterface $securityContext;
 
     protected Environment $twig;
 
-    /**
-     * @var string
-     */
-    protected $id;
+    protected string $id;
 
-    /**
-     * @var string
-     */
-    protected $hash;
+    protected string $hash;
 
-    /**
-     * @var string
-     */
-    protected $routeUrl;
+    protected ?string $routeUrl=null;
 
-    /**
-     * @var array
-     */
-    protected $routeParameters;
+    protected array $routeParameters;
 
     protected ?Source $source = null;
 
-    /**
-     * @var bool
-     */
-    protected $prepared = false;
+    protected bool $prepared = false;
 
-    /**
-     * @var int
-     */
-    protected $totalCount;
+    protected int $totalCount;
 
-    /**
-     * @var int
-     */
-    protected $page = 0;
+    protected int $page = 0;
 
-    /**
-     * @var int
-     */
-    protected $limit;
+    protected int $limit;
 
-    /**
-     * @var array
-     */
-    protected $limits = [];
+    protected array $limits = [];
 
     /**
      * @var Columns|Column[]
      */
-    protected $columns;
+    protected Columns|Column $columns;
 
-    /**
-     * @var Rows
-     */
-    protected $rows;
+ 
+    protected Rows $rows;
 
     /**
      * @var Action\MassAction[]
      */
-    protected $massActions = [];
+    protected array $massActions = [];
 
     /**
      * @var Action\RowAction[]
      */
-    protected $rowActions = [];
+    protected array $rowActions = [];
 
-    /**
-     * @var bool
-     */
-    protected $showFilters = true;
+   
+    protected bool $showFilters = true;
 
-    /**
-     * @var bool
-     */
-    protected $showTitles = true;
+ 
+    protected bool $showTitles = true;
 
     /**
      * @var array|object request
      */
-    protected $requestData;
+    protected array $requestData;
 
     /**
      * @var array|object session
      */
-    protected $sessionData = [];
+    protected array $sessionData = [];
 
-    /**
-     * @var string
-     */
-    protected $prefixTitle = '';
+ 
+    protected string $prefixTitle = '';
 
-    /**
-     * @var bool
-     */
-    protected $persistence = false;
+  
+    protected bool$persistence = false;
 
-    /**
-     * @var bool
-     */
-    protected $newSession = false;
 
-    /**
-     * @var string
-     */
-    protected $noDataMessage;
+    protected bool $newSession = false;
 
-    /**
-     * @var string
-     */
-    protected $noResultMessage;
+
+    protected string $noDataMessage;
+
+
+    protected string $noResultMessage;
 
     /**
      * @var Export[]
      */
-    protected $exports = [];
+    protected array $exports = [];
 
-    /**
-     * @var bool
-     */
-    protected $redirect = null;
+    
+    protected ?bool $redirect = null;
 
-    /**
-     * @var bool
-     */
-    protected $isReadyForExport = false;
 
-    /**
-     * @var Response
-     */
-    protected $exportResponse;
+    protected bool $isReadyForExport = false;
 
-    /**
-     * @var Response
-     */
-    protected $massActionResponse;
 
-    /**
-     * @var int
-     */
-    protected $maxResults;
+    protected Response $exportResponse;
 
-    /**
-     * @var array
-     */
-    protected $items = [];
+
+    protected ?Response $massActionResponse=null;
+
+
+    protected ?int $maxResults=null;
+
+
+    protected array $items = [];
 
     /**
      * Data junction of the grid.
-     *
-     * @var int
      */
-    protected $dataJunction = Column::DATA_CONJUNCTION;
+    protected int $dataJunction = Column::DATA_CONJUNCTION;
 
     /**
      * Permanent filters.
-     *
-     * @var array
      */
-    protected $permanentFilters = [];
+    protected array $permanentFilters = [];
 
     /**
      * Default filters.
-     *
-     * @var array
      */
-    protected $defaultFilters = [];
+    protected array $defaultFilters = [];
 
     /**
      * Default order (e.g. my_column_id|asc).
-     *
-     * @var string
      */
-    protected $defaultOrder;
+    protected ?string $defaultOrder=null;
 
     /**
      * Default limit.
-     *
-     * @var int
      */
-    protected $defaultLimit;
+    protected ?int $defaultLimit=null;
 
     /**
      * Default page.
-     *
-     * @var int
      */
-    protected $defaultPage;
+    protected ?int $defaultPage=null;
 
     /**
      * Tweaks.
-     *
-     * @var array
      */
-    protected $tweaks = [];
+    protected array $tweaks = [];
 
     /**
      * Default Tweak.
-     *
-     * @var string
      */
-    protected $defaultTweak;
+    protected ?string $defaultTweak=null;
 
     /**
      * Filters in session.
-     *
-     * @var array
      */
-    protected $sessionFilters;
+    protected  array $sessionFilters;
 
     // Lazy parameters
-    protected $lazyAddColumn = [];
-    protected $lazyHiddenColumns = [];
-    protected $lazyVisibleColumns = [];
-    protected $lazyHideShowColumns = [];
+    protected array $lazyAddColumn = [];
+    protected array $lazyHiddenColumns = [];
+    protected array $lazyVisibleColumns = [];
+    protected array $lazyHideShowColumns = [];
 
     // Lazy parameters for the action column
     protected $actionsColumnSize;
@@ -320,14 +242,15 @@ class Grid implements GridInterface
      * @param string                   $id        set if you are using more then one grid inside controller
      * @param GridConfigInterface|null $config    The grid configuration.
      */
-    public function __construct($container, AuthorizationCheckerInterface $securityContext, Environment $twig, $id = '', GridConfigInterface $config = null)
+    public function __construct( $container, $doctrine, RoutingRouterInterface $router, RequestStack $request_stack, AuthorizationCheckerInterface $securityContext, Environment $twig, $id = '', GridConfigInterface $config = null)
     {
         // @todo: why the whole container is injected?
         $this->container = $container;
+        $this->doctrine= $doctrine;
         $this->config = $config;
 
-        $this->router = $container->get('router');
-        $this->request = $container->get('request_stack')->getCurrentRequest();
+        $this->router = $router;
+        $this->request = $request_stack->getCurrentRequest();
         $this->session = $this->request->getSession();
         $this->securityContext = $securityContext;
         $this->twig = $twig;
@@ -870,7 +793,7 @@ class Grid implements GridInterface
     protected function processOrder($order)
     {
         if ($order !== null) {
-            list($columnId, $columnOrder) = explode('|', $order);
+            [$columnId, $columnOrder] = explode('|', $order);
 
             $column = $this->columns->getColumnById($columnId);
             if ($column->isSortable() && in_array(strtolower($columnOrder), ['asc', 'desc'])) {
@@ -902,7 +825,7 @@ class Grid implements GridInterface
 
         // Default order
         if ($this->defaultOrder !== null) {
-            list($columnId, $columnOrder) = explode('|', $this->defaultOrder);
+            [$columnId, $columnOrder] = explode('|', $this->defaultOrder);
 
             $this->columns->getColumnById($columnId);
             if (in_array(strtolower($columnOrder), ['asc', 'desc'])) {
@@ -1003,7 +926,7 @@ class Grid implements GridInterface
 
         // Order
         if (($order = $this->get(self::REQUEST_QUERY_ORDER)) !== null) {
-            list($columnId, $columnOrder) = explode('|', $order);
+            [$columnId, $columnOrder] = explode('|', $order);
 
             $this->columns->getColumnById($columnId)->setOrder($columnOrder);
         }
@@ -1100,10 +1023,7 @@ class Grid implements GridInterface
      */
     protected function getFromRequest($key)
     {
-        if (isset($this->requestData[$key])) {
-            return $this->requestData[$key];
-        }
-        return null;
+        return $this->requestData[$key] ?? null;
     }
 
     /**
@@ -1115,10 +1035,7 @@ class Grid implements GridInterface
      */
     protected function get($key)
     {
-        if (isset($this->sessionData[$key])) {
-            return $this->sessionData[$key];
-        }
-        return null;
+        return $this->sessionData[$key] ?? null;
     }
 
     /**
@@ -1367,7 +1284,7 @@ class Grid implements GridInterface
     {
         $tweaks = $this->getActiveTweaks();
 
-        return isset($tweaks[$group]) ? $tweaks[$group] : -1;
+        return $tweaks[$group] ?? -1;
     }
 
     /**
@@ -2106,7 +2023,7 @@ class Grid implements GridInterface
      *
      * @param array $ids
      */
-    public function deleteAction(array $ids)
+    public function deleteAction(array $ids): void
     {
         $this->source->delete($ids);
     }
@@ -2276,7 +2193,7 @@ class Grid implements GridInterface
 
         $sessionFilters = $this->getFilters();
 
-        return isset($sessionFilters[$columnId]) ? $sessionFilters[$columnId] : null;
+        return $sessionFilters[$columnId] ?? null;
     }
 
     /**

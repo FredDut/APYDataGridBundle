@@ -26,73 +26,69 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Tools\Pagination\CountWalker;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpKernel\Kernel;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManager;
+use APY\DataGridBundle\Grid\Mapping as GRID;
+
+/**
+ * @GRID\Source(columns="id, title, year, author")
+ */
+
 
 class Entity extends Source
 {
     use SQLResultCasing;
 
-    const DOT_DQL_ALIAS_PH = '__dot__';
-    const COLON_DQL_ALIAS_PH = '__col__';
+    public const DOT_DQL_ALIAS_PH = '__dot__';
+    public const COLON_DQL_ALIAS_PH = '__col__';
 
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    protected $manager;
+    protected EntityManager $manager;
 
     /**
      * @var \Doctrine\ORM\QueryBuilder
      */
-    protected $query;
+    protected QueryBuilder $query;
 
     /**
      * @var \Doctrine\ORM\QueryBuilder
      */
-    protected $querySelectfromSource;
+    protected QueryBuilder $querySelectfromSource;
 
     /**
      * @var string e.g Vendor\Bundle\Entity\Page
      */
-    protected $class;
+    protected string $class;
 
     /**
      * @var string e.g Cms:Page
      */
-    protected $entityName;
+    protected string $entityName;
 
     /**
      * @var string e.g mydatabase
      */
-    protected $managerName;
+    protected ?string $managerName=null;
 
-    /**
-     * @var \APY\DataGridBundle\Grid\Mapping\Metadata\Metadata
-     */
-    protected $metadata;
+   
+    protected \APY\DataGridBundle\Grid\Mapping\Metadata\Metadata $metadata;
 
-    /**
-     * @var \Doctrine\ORM\Mapping\ClassMetadata
-     */
-    protected $ormMetadata;
 
-    /**
-     * @var array
-     */
-    protected $joins;
+    protected \Doctrine\ORM\Mapping\ClassMetadata $ormMetadata;
 
-    /**
-     * @var string
-     */
-    protected $group;
+ 
+    protected array $joins;
 
-    /**
-     * @var string
-     */
-    protected $groupBy;
 
-    /**
-     * @var array
-     */
-    protected $hints;
+    protected string $group;
+
+  
+    protected array $groupBy;
+
+ 
+    protected array $hints;
 
     /**
      * The QueryBuilder that will be used to start generating query for the DataGrid
@@ -101,16 +97,14 @@ class Entity extends Source
      * Typical use-case involves an external repository creating complex default restriction (i.e. multi-tenancy etc)
      * which then will be expanded on by the datagrid.
      *
-     * @var QueryBuilder
      */
-    protected $queryBuilder;
+    protected ?QueryBuilder $queryBuilder=null;
 
     /**
      * The table alias that will be used in the query to fetch actual data.
      *
-     * @var string
      */
-    protected $tableAlias;
+    protected string $tableAlias;
 
     /**
      * @var null
@@ -123,13 +117,16 @@ class Entity extends Source
      *
      * @deprecated
      */
-    const TABLE_ALIAS = '_a';
+    public const TABLE_ALIAS = '_a';
 
     /**
      * @param string $entityName  e.g Cms:Page
      * @param string $managerName e.g. mydatabase
      */
-    public function __construct($entityName, $group = 'default', $managerName = null)
+    public function __construct(
+        // #[AutowireLocator([ManagerRegistry::class])]
+        // private ContainerInterface $handlers,
+        $entityName, $group = 'default', $managerName = null)
     {
         $this->entityName = $entityName;
         $this->managerName = $managerName;
@@ -139,8 +136,12 @@ class Entity extends Source
         $this->setTableAlias(self::TABLE_ALIAS);
     }
 
-    public function initialise($container)
+    // public function setManager($manager) {
+    //     $this->manager=$manager;
+    // }
+    public function initialise($container): void
     {
+        // $doctrine  = $fooService = $this->handlers->get(ManagerRegistry::class);
         $doctrine = $container->get('doctrine');
 
         $this->manager = version_compare(Kernel::VERSION, '2.1.0', '>=') ? $doctrine->getManager($this->managerName) : $doctrine->getEntityManager($this->managerName);
@@ -185,7 +186,7 @@ class Entity extends Source
             return $this->getTableAlias().'.'.$name;
         }
 
-        $matches = array();
+        $matches = [];
         if ($column->hasDQLFunction($matches)) {
             return $previousParent.'.'.$matches['field'];
         }
@@ -301,7 +302,7 @@ class Entity extends Source
     /**
      * @param \APY\DataGridBundle\Grid\Columns $columns
      */
-    public function getColumns($columns)
+    public function getColumns($columns): void
     {
         foreach ($this->metadata->getColumnsFromMapping($columns) as $column) {
             $columns->addColumn($column);
@@ -351,7 +352,7 @@ class Entity extends Source
      *
      * @param QueryBuilder $queryBuilder
      */
-    public function initQueryBuilder(QueryBuilder $queryBuilder)
+    public function initQueryBuilder(QueryBuilder $queryBuilder): void
     {
         $this->queryBuilder = clone $queryBuilder;
 
@@ -373,7 +374,7 @@ class Entity extends Source
         if ($this->queryBuilder instanceof QueryBuilder) {
             $qb = clone $this->queryBuilder;
         } else {
-            $qb = $this->manager->createQueryBuilder($this->class);
+            $qb = $this->manager->createQueryBuilder();
             $qb->from($this->class, $this->getTableAlias());
         }
 
@@ -443,7 +444,7 @@ class Entity extends Source
                     $fieldName = $this->getFieldName($columnForFilter, false);
                     $bindIndexPlaceholder = "?$bindIndex";
 
-                    if( in_array($filter->getOperator(), array(Column::OPERATOR_LIKE,Column::OPERATOR_RLIKE,Column::OPERATOR_LLIKE,Column::OPERATOR_NLIKE,))){
+                    if( in_array($filter->getOperator(), [Column::OPERATOR_LIKE, Column::OPERATOR_RLIKE, Column::OPERATOR_LLIKE, Column::OPERATOR_NLIKE])){
                         if(isset($dqlMatches['function']) && $dqlMatches['function'] == 'translation_agg'){
                             $translationFieldName = $this->getTranslationFieldNameWithParents($columnForFilter);
                             $fieldName = "LOWER(".$translationFieldName.")";
@@ -614,7 +615,7 @@ class Entity extends Source
             $rsm = new ResultSetMapping();
             $rsm->addScalarResult($this->getSQLResultCasing($platform,'dctrn_count'), 'count');
 
-            $countQuery->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Doctrine\ORM\Tools\Pagination\CountOutputWalker');
+            $countQuery->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, \Doctrine\ORM\Tools\Pagination\CountOutputWalker::class);
             $countQuery->setResultSetMapping($rsm);
         } else {
             $hints = $countQuery->getHint(Query::HINT_CUSTOM_TREE_WALKERS);
@@ -623,7 +624,7 @@ class Entity extends Source
                 $hints = [];
             }
 
-            $hints[] = 'Doctrine\ORM\Tools\Pagination\CountWalker';
+            $hints[] = \Doctrine\ORM\Tools\Pagination\CountWalker::class;
             //$hints[] = 'APY\DataGridBundle\Grid\Helper\ORMCountWalker';
             $countQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS, $hints);
         }
@@ -692,7 +693,7 @@ class Entity extends Source
         return $result;
     }
 
-    public function populateSelectFilters($columns, $loop = false)
+    public function populateSelectFilters($columns, $loop = false): void
     {
         /* @var $column Column */
         foreach ($columns as $column) {
@@ -782,7 +783,7 @@ class Entity extends Source
     /**
      * @param QueryBuilder $countQueryBuilder
      */
-    public function prepareCountQuery(QueryBuilder $countQueryBuilder)
+    public function prepareCountQuery(QueryBuilder $countQueryBuilder): void
     {
         if (is_callable($this->prepareCountQueryCallback)) {
             call_user_func($this->prepareCountQueryCallback, $countQueryBuilder);
@@ -801,7 +802,7 @@ class Entity extends Source
         return $this;
     }
 
-    public function delete(array $ids)
+    public function delete(array $ids): void
     {
         $repository = $this->getRepository();
 
@@ -828,12 +829,12 @@ class Entity extends Source
         return $this->entityName;
     }
 
-    public function addHint($key, $value)
+    public function addHint($key, $value): void
     {
         $this->hints[$key] = $value;
     }
 
-    public function clearHints()
+    public function clearHints(): void
     {
         $this->hints = [];
     }
@@ -843,7 +844,7 @@ class Entity extends Source
      *
      *  @param string $groupBy GroupBy column
      */
-    public function setGroupBy($groupBy)
+    public function setGroupBy($groupBy): void
     {
         $this->groupBy = $groupBy;
     }
@@ -856,7 +857,7 @@ class Entity extends Source
     /**
      * @param string $tableAlias
      */
-    public function setTableAlias($tableAlias)
+    public function setTableAlias($tableAlias): void
     {
         $this->tableAlias = $tableAlias;
     }

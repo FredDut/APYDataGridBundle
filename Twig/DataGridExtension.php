@@ -33,7 +33,7 @@ use Twig\TwigFunction;
  */
 class DataGridExtension extends AbstractExtension implements GlobalsInterface
 {
-    const DEFAULT_TEMPLATE = '@APYDataGrid/blocks.html.twig';
+    public const DEFAULT_TEMPLATE = '@APYDataGrid/blocks.html.twig';
 
     /**
      * @var TemplateWrapper[]
@@ -83,7 +83,7 @@ class DataGridExtension extends AbstractExtension implements GlobalsInterface
     /**
      * @param array $def
      */
-    public function setPagerFanta(array $def)
+    public function setPagerFanta(array $def): void
     {
         $this->pagerFantaDefs = $def;
     }
@@ -160,7 +160,7 @@ class DataGridExtension extends AbstractExtension implements GlobalsInterface
      * @param string  $id
      * @param array   $params
      */
-    public function initGrid($grid, $theme = null, $id = '', array $params = [])
+    public function initGrid($grid, $theme = null, $id = '', array $params = []): void
     {
         $this->theme = $theme;
         $this->templates = [];

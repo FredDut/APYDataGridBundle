@@ -24,7 +24,7 @@ class DataGridExtensionTest extends TestCase
         $this->extension = new DataGridExtension($router, '');
     }
 
-    public function testGetGridUrl()
+    public function testGetGridUrl(): void
     {
         $baseUrl = 'http://localhost';
         $gridHash = 'my_grid';

@@ -30,7 +30,7 @@ class DateTimeColumn extends Column
 
     protected $timezone;
 
-    public function __initialize(array $params)
+    public function __initialize(array $params): void
     {
         parent::__initialize($params);
 
@@ -182,7 +182,7 @@ class DateTimeColumn extends Column
         return $this->timezone;
     }
 
-    public function setTimezone($timezone)
+    public function setTimezone($timezone): void
     {
         $this->timezone = $timezone;
     }

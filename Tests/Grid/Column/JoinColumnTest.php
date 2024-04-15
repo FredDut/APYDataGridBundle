@@ -11,12 +11,12 @@ class JoinColumnTest extends TestCase
 {
     private \APY\DataGridBundle\Grid\Column\JoinColumn $column;
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals('join', $this->column->getType());
     }
 
-    public function testInitializeDefaultParams()
+    public function testInitializeDefaultParams(): void
     {
         $params = [];
         $column = new JoinColumn($params);
@@ -28,7 +28,7 @@ class JoinColumnTest extends TestCase
         $this->assertEquals(true, $column->getIsManualField());
     }
 
-    public function testInitialize()
+    public function testInitialize(): void
     {
         $col1 = 'col1';
         $col2 = 'col2';
@@ -45,7 +45,7 @@ class JoinColumnTest extends TestCase
         $this->assertEquals($separator, $column->getSeparator());
     }
 
-    public function testSetJoinColumns()
+    public function testSetJoinColumns(): void
     {
         $col1 = 'col1';
         $col2 = 'col2';
@@ -55,7 +55,7 @@ class JoinColumnTest extends TestCase
         $this->assertEquals([$col1, $col2], $this->column->getJoinColumns());
     }
 
-    public function testGetjoinColumns()
+    public function testGetjoinColumns(): void
     {
         $col1 = 'col1';
         $col2 = 'col2';
@@ -65,7 +65,7 @@ class JoinColumnTest extends TestCase
         $this->assertEquals([$col1, $col2], $this->column->getJoinColumns());
     }
 
-    public function testSetColumnNameOnFilters()
+    public function testSetColumnNameOnFilters(): void
     {
         $col1 = 'col1';
         $col2 = 'col2';

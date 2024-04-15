@@ -16,7 +16,7 @@ class RankColumn extends BlankColumn
 {
     protected $rank = 1;
 
-    public function __initialize(array $params)
+    public function __initialize(array $params): void
     {
         parent::__initialize($params);
 

@@ -26,7 +26,7 @@ class UntypedColumn extends Column
         return $this->type;
     }
 
-    public function setType($type)
+    public function setType($type): void
     {
         $this->type = $type;
     }

@@ -47,7 +47,7 @@ class GridFactoryTest extends TestCase
 
     private \APY\DataGridBundle\Grid\GridFactory $factory;
 
-    public function testCreateWithUnexpectedType()
+    public function testCreateWithUnexpectedType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->factory->create(1234);
@@ -55,7 +55,7 @@ class GridFactoryTest extends TestCase
         $this->factory->create(new \stdClass());
     }
 
-    public function testCreateWithTypeString()
+    public function testCreateWithTypeString(): void
     {
         $this->registry->expects($this->once())
                        ->method('getType')
@@ -65,14 +65,14 @@ class GridFactoryTest extends TestCase
         $this->assertInstanceOf(Grid::class, $this->factory->create('foo'));
     }
 
-    public function testCreateWithTypeObject()
+    public function testCreateWithTypeObject(): void
     {
         $this->registry->expects($this->never())->method('getType');
 
         $this->assertInstanceOf(Grid::class, $this->factory->create(new GridType()));
     }
 
-    public function testCreateBuilderWithDefaultType()
+    public function testCreateBuilderWithDefaultType(): void
     {
         $defaultType = new GridType();
 
@@ -86,7 +86,7 @@ class GridFactoryTest extends TestCase
         $this->assertSame($defaultType, $builder->getType());
     }
 
-    public function testCreateBuilder()
+    public function testCreateBuilder(): void
     {
         $givenOptions = ['a' => 1, 'b' => 2];
         $resolvedOptions = ['a' => 1, 'b' => 2, 'c' => 3];
@@ -122,13 +122,13 @@ class GridFactoryTest extends TestCase
         $this->assertNull($builder->getSource());
     }
 
-    public function testCreateColumnWithUnexpectedType()
+    public function testCreateColumnWithUnexpectedType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->factory->createColumn('foo', 1234);
     }
 
-    public function testCreateColumnWithTypeString()
+    public function testCreateColumnWithTypeString(): void
     {
         $expectedColumn = new TextColumn();
 
@@ -147,7 +147,7 @@ class GridFactoryTest extends TestCase
         $this->assertTrue($column->isVisibleForSource());
     }
 
-    public function testCreateColumnWithObject()
+    public function testCreateColumnWithObject(): void
     {
         $column = $this->factory->createColumn('foo', new TextColumn(), ['title' => 'bar']);
 

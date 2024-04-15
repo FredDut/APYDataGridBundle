@@ -23,7 +23,7 @@ class ExcelExport extends Export
 
     protected $mimeType = 'application/vnd.ms-excel';
 
-    public function computeData(Grid $grid)
+    public function computeData(Grid $grid): void
     {
         $data = $this->getGridData($grid);
 

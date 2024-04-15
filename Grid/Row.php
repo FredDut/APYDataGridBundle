@@ -46,7 +46,7 @@ class Row
     /**
      * @param EntityRepository $repository
      */
-    public function setRepository(EntityRepository $repository)
+    public function setRepository(EntityRepository $repository): void
     {
         $this->repository = $repository;
     }
@@ -146,7 +146,7 @@ class Row
      */
     public function getField($columnId)
     {
-        return isset($this->fields[$columnId]) ? $this->fields[$columnId] : '';
+        return $this->fields[$columnId] ?? '';
     }
 
     /**

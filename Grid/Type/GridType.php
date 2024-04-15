@@ -16,7 +16,7 @@ class GridType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildGrid(GridBuilder $builder, array $options = [])
+    public function buildGrid(GridBuilder $builder, array $options = []): void
     {
         $builder
             ->setRoute($options['route'])
@@ -39,7 +39,7 @@ class GridType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'source'           => null,
@@ -57,7 +57,7 @@ class GridType extends AbstractType
         ]);
 
         $allowedTypes = [
-            'source'           => ['null', 'APY\DataGridBundle\Grid\Source\Source'],
+            'source'           => ['null', \APY\DataGridBundle\Grid\Source\Source::class],
             'group_by'         => ['null', 'string', 'array'],
             'route_parameters' => 'array',
             'persistence'      => 'bool',

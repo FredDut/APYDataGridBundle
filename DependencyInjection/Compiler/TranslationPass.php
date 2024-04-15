@@ -22,7 +22,7 @@ class TranslationPass implements CompilerPassInterface
             return;
         }
 
-        $extractor = new Definition('APY\DataGridBundle\Translation\ColumnTitleAnnotationTranslationExtractor');
+        $extractor = new Definition(\APY\DataGridBundle\Translation\ColumnTitleAnnotationTranslationExtractor::class);
         $extractor
             ->setPublic(false)
             ->addTag('jms_translation.file_visitor');

@@ -14,13 +14,13 @@ class ColumnsTest extends TestCase
 
     private \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authChecker;
 
-    public function testGetIterator()
+    public function testGetIterator(): void
     {
         $iterator = $this->columns->getIterator();
         $this->assertInstanceOf(ColumnsIterator::class, $iterator);
     }
 
-    public function testAddColumn()
+    public function testAddColumn(): void
     {
         $column = $this->buildColumnMocks(1);
         $this->columns->addColumn($column);
@@ -28,7 +28,7 @@ class ColumnsTest extends TestCase
         $this->equalTo(1);
     }
 
-    public function testAddColumnsOrder()
+    public function testAddColumnsOrder(): void
     {
         [$column1, $column2, $column3, $column4] = $this->buildColumnMocks(4);
 
@@ -42,7 +42,7 @@ class ColumnsTest extends TestCase
         $this->assertSame([$column2, $column3, $column4, $column1], $this->columns->getColumns());
     }
 
-    public function testRaiseExceptionIfGetColumnByIdDoesNotExists()
+    public function testRaiseExceptionIfGetColumnByIdDoesNotExists(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -52,7 +52,7 @@ class ColumnsTest extends TestCase
         $this->columns->getColumnById('foo');
     }
 
-    public function testGetColumnById()
+    public function testGetColumnById(): void
     {
         $column = $this->buildColumnMocks(1);
         $column->method('getId')->willReturn('foo');
@@ -61,7 +61,7 @@ class ColumnsTest extends TestCase
         $this->assertSame($column, $this->columns->getColumnById('foo'));
     }
 
-    public function testHasColumnById()
+    public function testHasColumnById(): void
     {
         $column = $this->buildColumnMocks(1);
         $column->method('getId')->willReturn('foo');
@@ -71,7 +71,7 @@ class ColumnsTest extends TestCase
         $this->assertTrue($this->columns->hasColumnById('foo', false));
     }
 
-    public function testRaiseExceptionIfGetPrimaryColumnDoesNotExists()
+    public function testRaiseExceptionIfGetPrimaryColumnDoesNotExists(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -82,7 +82,7 @@ class ColumnsTest extends TestCase
         $this->columns->getPrimaryColumn();
     }
 
-    public function testGetPrimaryColumn()
+    public function testGetPrimaryColumn(): void
     {
         [$column1, $column2, $column3] = $this->buildColumnMocks(3);
 
@@ -98,7 +98,7 @@ class ColumnsTest extends TestCase
         $this->assertSame($column2, $this->columns->getPrimaryColumn());
     }
 
-    public function testAddExtension()
+    public function testAddExtension(): void
     {
         $column1 = $this->createMock(Column::class);
         $column1->method('getType')->willReturn('foo');
@@ -113,7 +113,7 @@ class ColumnsTest extends TestCase
         $this->assertEquals(['foo' => $column1, 'bar' => $column2], $this->columns->getExtensions());
     }
 
-    public function testHasExtensionForColumnType()
+    public function testHasExtensionForColumnType(): void
     {
         $column1 = $this->createMock(Column::class);
         $column1->method('getType')->willReturn('foo');
@@ -124,7 +124,7 @@ class ColumnsTest extends TestCase
         $this->assertFalse($this->columns->hasExtensionForColumnType('bar'));
     }
 
-    public function testGetExtensionForColumnType()
+    public function testGetExtensionForColumnType(): void
     {
         $column1 = $this->createMock(Column::class);
         $column1->method('getType')->willReturn('foo');
@@ -134,7 +134,7 @@ class ColumnsTest extends TestCase
         $this->assertEquals($column1, $this->columns->getExtensionForColumnType('foo'));
     }
 
-    public function testGetHash()
+    public function testGetHash(): void
     {
         $this->assertEquals('', $this->columns->getHash());
 
@@ -154,7 +154,7 @@ class ColumnsTest extends TestCase
         $this->assertEquals('thisIsTheHash', $this->columns->getHash());
     }
 
-    public function testSetColumnsOrder()
+    public function testSetColumnsOrder(): void
     {
         [$column1, $column2, $column3] = $this->buildColumnMocks(3);
 
@@ -171,7 +171,7 @@ class ColumnsTest extends TestCase
         $this->assertSame([$column3, $column1, $column2], $this->columns->getColumns());
     }
 
-    public function testPartialSetColumnsOrderAndKeepOthers()
+    public function testPartialSetColumnsOrderAndKeepOthers(): void
     {
         [$column1, $column2, $column3] = $this->buildColumnMocks(3);
 
@@ -188,7 +188,7 @@ class ColumnsTest extends TestCase
         $this->assertSame([$column3, $column2, $column1], $this->columns->getColumns());
     }
 
-    public function testPartialSetColumnsOrderWithoutKeepOthers()
+    public function testPartialSetColumnsOrderWithoutKeepOthers(): void
     {
         [$column1, $column2, $column3] = $this->buildColumnMocks(3);
 

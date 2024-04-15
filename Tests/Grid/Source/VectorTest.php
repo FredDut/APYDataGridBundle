@@ -14,26 +14,26 @@ class VectorTest extends TestCase
 {
     private \APY\DataGridBundle\Grid\Source\Vector $vector;
 
-    public function testCreateVectorWithEmptyData()
+    public function testCreateVectorWithEmptyData(): void
     {
         $this->assertEmpty($this->vector->getData());
     }
 
-    public function testRaiseExceptionDuringVectorCreationWhenDataIsNotAVector()
+    public function testRaiseExceptionDuringVectorCreationWhenDataIsNotAVector(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         new Vector(['notAnArray'], []);
     }
 
-    public function testRaiseExceptionDuringVectorCreationWhenEmptyVector()
+    public function testRaiseExceptionDuringVectorCreationWhenEmptyVector(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         new Vector([[]], []);
     }
 
-    public function testCreateVectorWithColumns()
+    public function testCreateVectorWithColumns(): void
     {
         $column = $this->createMock(Column::class);
         $column2 = $this->createMock(Column::class);
@@ -44,14 +44,14 @@ class VectorTest extends TestCase
         //$this->assertEquals($columns, $vector->getColumns());
     }
 
-    public function testInitialiseWithoutData()
+    public function testInitialiseWithoutData(): void
     {
         $this->vector->initialise($this->createMock(Container::class));
 
         //$this->assertEmpty($this->vector->getColumns());
     }
 
-    public function testInizialiseWithGuessedColumnsMergedToAlreadySettedColumns()
+    public function testInizialiseWithGuessedColumnsMergedToAlreadySettedColumns(): void
     {
         $columnId = 'cId';
         $column = $this->createMock(Column::class);
@@ -94,7 +94,7 @@ class VectorTest extends TestCase
         //$this->assertEquals([$column, $column2, $uc1, $uc2], $vector->getColumns());
     }
 
-    public function testInizialiseWithoutGuessedColumns()
+    public function testInizialiseWithoutGuessedColumns(): void
     {
         $columnId = 'cId';
         $column = $this->createMock(Column::class);
@@ -118,7 +118,7 @@ class VectorTest extends TestCase
     /**
      * @dataProvider guessedColumnProvider
      */
-    public function testInizializeWithGuessedColumn($vectorValue, UntypedColumn $untypedColumn, $columnType)
+    public function testInizializeWithGuessedColumn($vectorValue, UntypedColumn $untypedColumn, $columnType): void
     {
         $untypedColumn->setType($columnType);
 
@@ -128,7 +128,7 @@ class VectorTest extends TestCase
         //$this->assertEquals([$untypedColumn], $vector->getColumns());
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $rows = [new Row(), new Row()];
         $columns = $this->createMock(Columns::class);
@@ -142,7 +142,7 @@ class VectorTest extends TestCase
         $this->assertEquals($rows, $vector->execute($columns, 0, null, null));
     }
 
-    public function testPopulateSelectFilters()
+    public function testPopulateSelectFilters(): void
     {
         $columns = $this->createMock(Columns::class);
 
@@ -155,7 +155,7 @@ class VectorTest extends TestCase
         $vector->populateSelectFilters($columns);
     }
 
-    public function testGetTotalCount()
+    public function testGetTotalCount(): void
     {
         $maxResults = 10;
 
@@ -168,7 +168,7 @@ class VectorTest extends TestCase
         $this->assertEquals(8, $vector->getTotalCount($maxResults));
     }
 
-    public function testGetHash()
+    public function testGetHash(): void
     {
         $idCol1 = 'idCol1';
         $column1 = $this->createMock(Column::class);
@@ -187,7 +187,7 @@ class VectorTest extends TestCase
         $this->assertEquals(\APY\DataGridBundle\Grid\Source\Vector::class . md5($idCol1.$idCol2), $vector->getHash());
     }
 
-    public function testSetId()
+    public function testSetId(): void
     {
         $id = 'id';
         $this->vector->setId($id);
@@ -195,7 +195,7 @@ class VectorTest extends TestCase
         $this->assertEquals($id, $this->vector->getId());
     }
 
-    public function testGetId()
+    public function testGetId(): void
     {
         $id = 'id';
         $this->vector->setId($id);

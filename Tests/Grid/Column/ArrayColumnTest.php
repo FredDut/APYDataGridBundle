@@ -13,12 +13,12 @@ class ArrayColumnTest extends TestCase
 {
     private \APY\DataGridBundle\Grid\Column\ArrayColumn $column;
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals('array', $this->column->getType());
     }
 
-    public function testInitializeDefaultParams()
+    public function testInitializeDefaultParams(): void
     {
         $this->assertEquals([
             Column::OPERATOR_LIKE,
@@ -30,7 +30,7 @@ class ArrayColumnTest extends TestCase
         ], $this->column->getOperators());
     }
 
-    public function testDocumentFilters()
+    public function testDocumentFilters(): void
     {
         $value = ['foo', 'bar'];
 
@@ -42,7 +42,7 @@ class ArrayColumnTest extends TestCase
         );
     }
 
-    public function testEqualFilter()
+    public function testEqualFilter(): void
     {
         $value = ['foo', 'foobar'];
 
@@ -54,7 +54,7 @@ class ArrayColumnTest extends TestCase
         );
     }
 
-    public function testNotEqualFilter()
+    public function testNotEqualFilter(): void
     {
         $value = ['foo', 'foobar'];
 
@@ -66,7 +66,7 @@ class ArrayColumnTest extends TestCase
         );
     }
 
-    public function testLikeFilter()
+    public function testLikeFilter(): void
     {
         $value = ['foo'];
 
@@ -78,7 +78,7 @@ class ArrayColumnTest extends TestCase
         );
     }
 
-    public function testNotLikeFilter()
+    public function testNotLikeFilter(): void
     {
         $value = ['foo'];
 
@@ -90,7 +90,7 @@ class ArrayColumnTest extends TestCase
         );
     }
 
-    public function testIsNullFilter()
+    public function testIsNullFilter(): void
     {
         $this->column->setData(['operator' => Column::OPERATOR_ISNULL]);
 
@@ -101,7 +101,7 @@ class ArrayColumnTest extends TestCase
         $this->assertEquals(Column::DATA_DISJUNCTION, $this->column->getDataJunction());
     }
 
-    public function testIsNotNullFilter()
+    public function testIsNotNullFilter(): void
     {
         $this->column->setData(['operator' => Column::OPERATOR_ISNOTNULL]);
 
@@ -111,7 +111,7 @@ class ArrayColumnTest extends TestCase
         ], $this->column->getFilters('asource'));
     }
 
-    public function testRenderCellWithoutCallback()
+    public function testRenderCellWithoutCallback(): void
     {
         $values = ['foo' => 'a', 'bar' => 'b', 'foobar' => ['c', 'd']];
 
@@ -125,7 +125,7 @@ class ArrayColumnTest extends TestCase
         $this->assertEquals($result, $values);
     }
 
-    public function testRenderCellWithCallback()
+    public function testRenderCellWithCallback(): void
     {
         $values = ['foo' => 'a', 'bar' => 'b', 'foobar' => ['c', 'd']];
         $this->column->manipulateRenderCell(fn($value, $row, $router) => ['bar' => 'a', 'foo' => 'b']);

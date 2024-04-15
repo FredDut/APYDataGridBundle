@@ -7,13 +7,13 @@ use PHPUnit\Framework\TestCase;
 
 class DeleteMassActionTest extends TestCase
 {
-    public function testConstructWithConfirmation()
+    public function testConstructWithConfirmation(): void
     {
         $ma = new DeleteMassAction(true);
         $this->assertEquals(true, $ma->getConfirm());
     }
 
-    public function testConstructWithoutConfirmation()
+    public function testConstructWithoutConfirmation(): void
     {
         $ma = new DeleteMassAction();
         $this->assertEquals(false, $ma->getConfirm());

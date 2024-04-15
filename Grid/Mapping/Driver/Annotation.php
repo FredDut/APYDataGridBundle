@@ -48,7 +48,7 @@ class Annotation implements DriverInterface
 
     public function getGroupBy($class, $group = 'default')
     {
-        return isset($this->groupBy[$class][$group]) ? $this->groupBy[$class][$group] : [];
+        return $this->groupBy[$class][$group] ?? [];
     }
 
     protected function loadMetadataFromReader($className, $group = 'default')
@@ -136,11 +136,11 @@ class Annotation implements DriverInterface
             }
 
             if (!isset($metadata['filterable'])) {
-                $metadata['filterable'] = isset($this->filterable[$className][$group]) ? $this->filterable[$className][$group] : true;
+                $metadata['filterable'] = $this->filterable[$className][$group] ?? true;
             }
 
             if (!isset($metadata['sortable'])) {
-                $metadata['sortable'] = isset($this->sortable[$className][$group]) ? $this->sortable[$className][$group] : true;
+                $metadata['sortable'] = $this->sortable[$className][$group] ?? true;
             }
 
             if (!isset($metadata['title'])) {

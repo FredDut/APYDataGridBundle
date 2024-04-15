@@ -44,7 +44,7 @@ class NumberColumn extends Column
 
     protected $maxFractionDigits;
 
-    public function __initialize(array $params)
+    public function __initialize(array $params): void
     {
         parent::__initialize($params);
 
@@ -259,7 +259,7 @@ class NumberColumn extends Column
         return $this->fractional;
     }
 
-    public function setMaxFractionDigits($maxFractionDigits)
+    public function setMaxFractionDigits($maxFractionDigits): void
     {
         $this->maxFractionDigits = $maxFractionDigits;
     }

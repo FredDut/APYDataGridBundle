@@ -134,7 +134,7 @@ abstract class Column
         $this->__initialize((array) $params);
     }
 
-    public function __initialize(array $params)
+    public function __initialize(array $params): void
     {
         $this->params = $params;
         $this->setId($this->getParam('id'));
@@ -193,7 +193,7 @@ abstract class Column
 
     protected function getParam($id, $default = null)
     {
-        return isset($this->params[$id]) ? $this->params[$id] : $default;
+        return $this->params[$id] ?? $default;
     }
 
     /**
@@ -862,7 +862,7 @@ abstract class Column
         return $this->selectMulti;
     }
 
-    public function setSelectMulti($selectMulti)
+    public function setSelectMulti($selectMulti): void
     {
         $this->selectMulti = $selectMulti;
     }
@@ -872,7 +872,7 @@ abstract class Column
         return $this->selectExpanded;
     }
 
-    public function setSelectExpanded($selectExpanded)
+    public function setSelectExpanded($selectExpanded): void
     {
         $this->selectExpanded = $selectExpanded;
     }
@@ -999,7 +999,7 @@ abstract class Column
         return $this->class;
     }
 
-    public function setIsManualField($isManualField)
+    public function setIsManualField($isManualField): void
     {
         $this->isManualField = $isManualField;
     }
@@ -1009,7 +1009,7 @@ abstract class Column
         return $this->isManualField;
     }
 
-    public function setIsAggregate($isAggregate)
+    public function setIsAggregate($isAggregate): void
     {
         $this->isAggregate = $isAggregate;
     }

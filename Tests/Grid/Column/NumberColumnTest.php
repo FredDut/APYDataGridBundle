@@ -13,12 +13,12 @@ class NumberColumnTest extends TestCase
 {
     private \APY\DataGridBundle\Grid\Column\NumberColumn $column;
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals('number', $this->column->getType());
     }
 
-    public function testInitializeDefaultParams()
+    public function testInitializeDefaultParams(): void
     {
         $this->assertEquals(Column::ALIGN_RIGHT, $this->column->getAlign());
         $this->assertEquals(\NumberFormatter::DECIMAL, $this->column->getStyle());
@@ -45,7 +45,7 @@ class NumberColumnTest extends TestCase
         $this->assertEquals(Column::OPERATOR_EQ, $this->column->getDefaultOperator());
     }
 
-    public function testInitializeStyle()
+    public function testInitializeStyle(): void
     {
         $column = new NumberColumn(['style' => 'decimal']);
         $this->assertEquals(\NumberFormatter::DECIMAL, $column->getStyle());
@@ -71,61 +71,61 @@ class NumberColumnTest extends TestCase
         $this->assertEquals(\NumberFormatter::SPELLOUT, $column->getStyle());
     }
 
-    public function testInitializeStyleWithInvalidValue()
+    public function testInitializeStyleWithInvalidValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $column = new NumberColumn(['style' => 'foostyle']);
     }
 
-    public function testInitializeLocale()
+    public function testInitializeLocale(): void
     {
         $column = new NumberColumn(['locale' => 'it']);
         $this->assertEquals('it',  $column->getLocale());
     }
 
-    public function testInitializePrecision()
+    public function testInitializePrecision(): void
     {
         $column = new NumberColumn(['precision' => 2]);
         $this->assertEquals(2, $column->getPrecision());
     }
 
-    public function testInitializeGrouping()
+    public function testInitializeGrouping(): void
     {
         $column = new NumberColumn(['grouping' => 3]);
         $this->assertEquals(3, $column->getGrouping());
     }
 
-    public function testInitializeRoundingMode()
+    public function testInitializeRoundingMode(): void
     {
         $column = new NumberColumn(['roundingMode' => \NumberFormatter::ROUND_HALFDOWN]);
         $this->assertEquals(\NumberFormatter::ROUND_HALFDOWN, $column->getRoundingMode());
     }
 
-    public function testInitializeRuleSet()
+    public function testInitializeRuleSet(): void
     {
         $column = new NumberColumn(['ruleSet' => \NumberFormatter::PUBLIC_RULESETS]);
         $this->assertEquals(\NumberFormatter::PUBLIC_RULESETS, $column->getRuleSet());
     }
 
-    public function testInitializeCurrencyCode()
+    public function testInitializeCurrencyCode(): void
     {
         $column = new NumberColumn(['currencyCode' => 'EUR']);
         $this->assertEquals('EUR',  $column->getCurrencyCode());
     }
 
-    public function testInizializeFractional()
+    public function testInizializeFractional(): void
     {
         $column = new NumberColumn(['fractional' => true]);
         $this->assertEquals(true, $column->getFractional());
     }
 
-    public function testInizializeMaxFractionalDigits()
+    public function testInizializeMaxFractionalDigits(): void
     {
         $column = new NumberColumn(['maxFractionDigits' => 2]);
         $this->assertEquals(2, $column->getMaxFractionDigits());
     }
 
-    public function testIsQueryValid()
+    public function testIsQueryValid(): void
     {
         $this->assertTrue($this->column->isQueryValid('1'));
         $this->assertTrue($this->column->isQueryValid(1));
@@ -136,7 +136,7 @@ class NumberColumnTest extends TestCase
         $this->assertFalse($this->column->isQueryValid(['foo', 'bar']));
     }
 
-    public function testRenderCellWithCallback()
+    public function testRenderCellWithCallback(): void
     {
         $value = 1.0;
         $this->column->manipulateRenderCell(fn($value, $row, $router) => (int) $value);
@@ -150,13 +150,13 @@ class NumberColumnTest extends TestCase
         $this->assertEquals($result, $value);
     }
 
-    public function testDisplayedValueWithEmptyValue()
+    public function testDisplayedValueWithEmptyValue(): void
     {
         $this->assertEquals('', $this->column->getDisplayedValue(''));
         $this->assertEquals('', $this->column->getDisplayedValue(null));
     }
 
-    public function testDisplayedPercentValue()
+    public function testDisplayedPercentValue(): void
     {
         $column = new NumberColumn([
             'precision'         => 2,
@@ -171,7 +171,7 @@ class NumberColumnTest extends TestCase
         $this->assertEquals('1,000.00%', $column->getDisplayedValue(1000));
     }
 
-    public function testDisplayedCurrencyValue()
+    public function testDisplayedCurrencyValue(): void
     {
         $column = new NumberColumn([
             'precision'         => 2,
@@ -187,7 +187,7 @@ class NumberColumnTest extends TestCase
         $this->assertEquals('€1,000.00', $column->getDisplayedValue(1000));
     }
 
-    public function testDisplayedCurrencyWithoutCurrencyCode()
+    public function testDisplayedCurrencyWithoutCurrencyCode(): void
     {
         $column = new NumberColumn([
             'precision'         => 2,
@@ -202,7 +202,7 @@ class NumberColumnTest extends TestCase
         $this->assertEquals('$1,000.00', $column->getDisplayedValue(1000));
     }
 
-    public function testDisplayedCurrencyWithoutAValidISO4217CCurrencyCode()
+    public function testDisplayedCurrencyWithoutAValidISO4217CCurrencyCode(): void
     {
         $column = new NumberColumn([
             'precision'         => 2,
@@ -218,7 +218,7 @@ class NumberColumnTest extends TestCase
         $column->getDisplayedValue(1000);
     }
 
-    public function testDisplayedValueFromArrayValues()
+    public function testDisplayedValueFromArrayValues(): void
     {
         $column = new NumberColumn([
             'style'  => 'decimal',
@@ -228,7 +228,7 @@ class NumberColumnTest extends TestCase
         $this->assertEquals(200, $column->getDisplayedValue(100));
     }
 
-    public function testGetFilters()
+    public function testGetFilters(): void
     {
         $this->column->setData(['operator' => Column::OPERATOR_BTW, 'from' => '10', 'to' => '20']);
         $this->assertEquals([
@@ -248,55 +248,55 @@ class NumberColumnTest extends TestCase
         ], $this->column->getFilters('asource'));
     }
 
-    public function getStyle()
+    public function getStyle(): void
     {
         $column = new NumberColumn(['style' => 'decimal']);
         $this->assertEquals(\NumberFormatter::DECIMAL, $column->getStyle());
     }
 
-    public function getLocale()
+    public function getLocale(): void
     {
         $column = new NumberColumn(['locale' => 'it_IT']);
         $this->assertEquals('it_IT', $column->getLocale());
     }
 
-    public function getPrecision()
+    public function getPrecision(): void
     {
         $column = new NumberColumn(['precision' => 2]);
         $this->assertEquals(2, $column->getPrecision());
     }
 
-    public function getGrouping()
+    public function getGrouping(): void
     {
         $column = new NumberColumn(['grouping' => 3]);
         $this->assertEquals(3, $column->getGrouping());
     }
 
-    public function getRoundingMode()
+    public function getRoundingMode(): void
     {
         $column = new NumberColumn(['roundingMode' => \NumberFormatter::ROUND_HALFDOWN]);
         $this->assertEquals(\NumberFormatter::ROUND_HALFDOWN, $column->getRoundingMode());
     }
 
-    public function getRuleSet()
+    public function getRuleSet(): void
     {
         $column = new NumberColumn(['ruleSet' => \NumberFormatter::PUBLIC_RULESETS]);
         $this->assertEquals(\NumberFormatter::PUBLIC_RULESETS, $column->getRuleSet());
     }
 
-    public function getCurrencyCode()
+    public function getCurrencyCode(): void
     {
         $column = new NumberColumn(['currencyCode' => 'USD']);
         $this->assertEquals('USD', $column->getCurrencyCode());
     }
 
-    public function getFractional()
+    public function getFractional(): void
     {
         $column = new NumberColumn(['fractional' => true]);
         $this->assertTrue($column->getFractional());
     }
 
-    public function getMaxFractionDigits()
+    public function getMaxFractionDigits(): void
     {
         $column = new NumberColumn(['maxFractionDigits' => 3]);
         $this->assertEquals(3, $column->getMaxFractionDigits());

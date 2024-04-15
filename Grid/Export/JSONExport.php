@@ -21,7 +21,7 @@ class JSONExport extends Export
 {
     protected $fileExtension = 'json';
 
-    public function computeData(Grid $grid)
+    public function computeData(Grid $grid): void
     {
         $this->content = json_encode($this->getGridData($grid));
     }
