@@ -41,6 +41,8 @@ class GridBuilderTest extends TestCase
 
     private $twig;
 
+    private $router;
+
     private $authChecker;
 
     private \APY\DataGridBundle\Grid\GridBuilder $builder;
@@ -59,6 +61,7 @@ class GridBuilderTest extends TestCase
         $self = $this;
         $authChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $this->authChecker = $authChecker;
+        $this->router = $this->createMock(RouterInterface::class);
         $this->container = $this->createMock(Container::class);
         $this->container->expects($this->any())
             ->method('get')
@@ -82,7 +85,7 @@ class GridBuilderTest extends TestCase
             }));
         $this->twig = $this->createMock(Environment::class);
         $this->factory = $this->createMock(GridFactoryInterface::class);
-        $this->builder = new GridBuilder($this->container, $this->authChecker, $this->twig, $this->factory, 'name');
+        $this->builder = new GridBuilder($this->container, $this->authChecker, $this->router, $this->twig, $this->factory, 'name');
     }
 
     public function testAddUnexpectedType(): void
