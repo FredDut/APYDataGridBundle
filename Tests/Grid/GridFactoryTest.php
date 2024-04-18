@@ -35,6 +35,10 @@ class GridFactoryTest extends TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     private $registry;
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $router;
 
     private $authChecker;
 
@@ -166,6 +170,7 @@ class GridFactoryTest extends TestCase
         $this->container = $this->createMock(Container::class);
         $this->authChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $this->twig = $this->createMock(Environment::class);
+        $this->router = $this->createMock(RouterInterface::class);
         $this->container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($param) use ($self) {
@@ -190,6 +195,6 @@ class GridFactoryTest extends TestCase
 
         $this->registry = $this->createMock(GridRegistryInterface::class);
         $this->builder = $this->createMock(GridBuilderInterface::class);
-        $this->factory = new GridFactory($this->container, $this->authChecker, $this->twig, $this->registry);
+        $this->factory = new GridFactory($this->container, $this->authChecker, $this->router, $this->twig, $this->registry);
     }
 }

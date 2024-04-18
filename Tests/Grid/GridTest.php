@@ -29,7 +29,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
 use Twig\Template;
@@ -4478,7 +4478,7 @@ class GridTest extends TestCase
         $this->requestStack = $requestStack;
 
         $this->router = $this
-            ->getMockBuilder(Router::class)
+            ->getMockBuilder(RouterInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -4507,7 +4507,7 @@ class GridTest extends TestCase
         $this->gridId = (string) $id;
         $this->gridHash = 'grid_' . $this->gridId;
 
-        $this->grid = new Grid($container, $this->authChecker, $this->twig, $this->gridId, $gridConfigInterface);
+        $this->grid = new Grid($container, $this->authChecker, $this->router, $this->twig, $this->gridId, $gridConfigInterface);
     }
 
     private function mockResetGridSessionWhenResetFilterIsPressed(): void

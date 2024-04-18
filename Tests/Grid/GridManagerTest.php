@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\Container;
 use Twig\Environment;
+use Symfony\Component\Routing\RouterInterface;
 
 class GridManagerTest extends TestCase
 {
@@ -19,6 +20,8 @@ class GridManagerTest extends TestCase
     private $container;
 
     private $twig;
+
+    private $router;
 
     public function testGetIterator(): void
     {
@@ -490,7 +493,8 @@ class GridManagerTest extends TestCase
     {
         $this->container = $this->createMock(Container::class);
         $this->twig = $this->createMock(Environment::class);
-        $this->gridManager = new GridManager($this->container, $this->twig);
+        $this->router = $this->createMock(RouterInterface::class);
+        $this->gridManager = new GridManager($this->container, $this->twig, $this->router);
     }
 
     /**

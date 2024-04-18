@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment ;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class GridFactory.
@@ -26,6 +27,8 @@ class GridFactory implements GridFactoryInterface
 
     private Environment $twig;
 
+    private RouterInterface $router;
+
     private GridRegistryInterface $registry;
 
     /**
@@ -34,10 +37,11 @@ class GridFactory implements GridFactoryInterface
      * @param Container             $container The service container
      * @param GridRegistryInterface $registry  The grid registry
      */
-    public function __construct(Container $container, AuthorizationCheckerInterface $securityContext, Environment $twig, GridRegistryInterface $registry)
+    public function __construct(Container $container, AuthorizationCheckerInterface $securityContext, RouterInterface $router, Environment $twig, GridRegistryInterface $registry)
     {
         $this->container = $container;
         $this->registry = $registry;
+        $this->router = $router;
         $this->securityContext = $securityContext;
         $this->twig = $twig;
     }
@@ -58,7 +62,7 @@ class GridFactory implements GridFactoryInterface
         $type = $this->resolveType($type);
         $options = $this->resolveOptions($type, $source, $options);
 
-        $builder = new GridBuilder($this->container, $this->securityContext, $this->twig, $this, $type->getName(), $options);
+        $builder = new GridBuilder($this->container, $this->securityContext, $this->router, $this->twig, $this, $type->getName(), $options);
         $builder->setType($type);
 
         $type->buildGrid($builder, $options);
