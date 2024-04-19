@@ -34,6 +34,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
 use Twig\Template;
 use Twig\TemplateWrapper;
+use Doctrine\ORM\EntityManager;
 
 class GridTest extends TestCase
 {
@@ -48,7 +49,10 @@ class GridTest extends TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     private $container;
-
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $doctrine;
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -4476,7 +4480,10 @@ class GridTest extends TestCase
             ->method('getCurrentRequest')
             ->willReturn($request);
         $this->requestStack = $requestStack;
-
+        $this->doctrine = $this
+            ->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->router = $this
             ->getMockBuilder(RouterInterface::class)
             ->disableOriginalConstructor()
@@ -4507,7 +4514,7 @@ class GridTest extends TestCase
         $this->gridId = (string) $id;
         $this->gridHash = 'grid_' . $this->gridId;
 
-        $this->grid = new Grid($container, $this->authChecker, $this->router, $this->twig, $this->gridId, $gridConfigInterface);
+        $this->grid = new Grid($container,  $this->doctrine, $this->router, $this->requestStack, $this->authChecker, $this->twig, $this->gridId, $gridConfigInterface);
     }
 
     private function mockResetGridSessionWhenResetFilterIsPressed(): void
