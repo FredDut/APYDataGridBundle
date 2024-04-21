@@ -11,21 +11,21 @@ jobs:
     strategy:
       matrix:
         php:
-          - '7.4'
-          - '8.0'
-          - '8.1'
+          # - '7.4'
+          # - '8.0'
+          # - '8.1'
           - '8.2'
           - '8.3'
         symfony:
-          - '5.4.*'       
+          # - '5.4.*'       
           - '6.4.*'          
         dependencies:
           - 'highest'
         include:
-          - php: '7.4'
+          - php: '8.2'
             dependencies: 'lowest'
         exclude:
-          - php: '7.4'
+          - php: '8.2'
             dependencies: 'highest'               
     steps:
     - name: 'Checkout'

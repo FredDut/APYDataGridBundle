@@ -82,9 +82,9 @@ class GridBuilderTest extends TestCase
                         $request = new Request([], [], ['key' => 'value']);
                         $session = new Session();
                         $request->setSession($session);
-                        $requestStack = new RequestStack();
-                        $requestStack->push($request);
-                        return $requestStack;
+                        $this->request_stack = new RequestStack();
+                        $this->request_stack->push($request);
+                        return $this->request_stack;
                         break;
                     case 'security.authorization_checker':
                         return $authChecker;
