@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment ;
@@ -66,7 +67,7 @@ class GridBuilderTest extends TestCase
         $self = $this;
         $authChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $this->authChecker = $authChecker;
-        $this->router = $this->createMock(RouterInterface::class);
+        $this->router = $this->createMock(Router::class);
         $this->container = $this->createMock(Container::class);
         $this->doctrine = $this->createMock(Entitymanager::class);
         $this->request_stack = $this->createMock(RequestStack::class);
