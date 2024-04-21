@@ -10,6 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment ;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class GridFactory.
@@ -22,6 +24,10 @@ class GridFactory implements GridFactoryInterface
      * The service container.
      */
     private Container $container;
+
+    private EntityManager $doctrine;
+
+    private RequestStack $request_stack;
 
     private AuthorizationCheckerInterface $securityContext;
 
@@ -37,11 +43,13 @@ class GridFactory implements GridFactoryInterface
      * @param Container             $container The service container
      * @param GridRegistryInterface $registry  The grid registry
      */
-    public function __construct(Container $container, AuthorizationCheckerInterface $securityContext, RouterInterface $router, Environment $twig, GridRegistryInterface $registry)
+    public function __construct(Container $container, EntityManager $doctrine, RequestStack $request_stack, AuthorizationCheckerInterface $securityContext, RouterInterface $router, Environment $twig, GridRegistryInterface $registry)
     {
         $this->container = $container;
         $this->registry = $registry;
         $this->router = $router;
+        $this->request_stack = $request_stack;
+        $this->doctrine = $doctrine;
         $this->securityContext = $securityContext;
         $this->twig = $twig;
     }
@@ -62,7 +70,7 @@ class GridFactory implements GridFactoryInterface
         $type = $this->resolveType($type);
         $options = $this->resolveOptions($type, $source, $options);
 
-        $builder = new GridBuilder($this->container, $this->securityContext, $this->router, $this->twig, $this, $type->getName(), $options);
+        $builder = new GridBuilder($this->container, $this->doctrine, $this->router,  $this->request_stack, $this->securityContext,  $this->twig, $this, $type->getName(), $options);
         $builder->setType($type);
 
         $type->buildGrid($builder, $options);

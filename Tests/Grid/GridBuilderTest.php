@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment ;
+use Doctrine\ORM\EntityManager;
+
 
 /**
  * Class GridBuilderTest.
@@ -38,6 +40,9 @@ class GridBuilderTest extends TestCase
     private $factory;
 
     private $registry;
+
+    private $doctrine;
+    private $request_stack;
 
     private $twig;
 
@@ -63,6 +68,8 @@ class GridBuilderTest extends TestCase
         $this->authChecker = $authChecker;
         $this->router = $this->createMock(RouterInterface::class);
         $this->container = $this->createMock(Container::class);
+        $this->doctrine = $this->createMock(Entitymanager::class);
+        $this->request_stack = $this->createMock(RequestStack::class);
         $this->container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($param) use ($self) {
@@ -85,7 +92,7 @@ class GridBuilderTest extends TestCase
             }));
         $this->twig = $this->createMock(Environment::class);
         $this->factory = $this->createMock(GridFactoryInterface::class);
-        $this->builder = new GridBuilder($this->container, $this->authChecker, $this->router, $this->twig, $this->factory, 'name');
+        $this->builder = new GridBuilder($this->container, $this->doctrine, $this->request_stack, $this->authChecker, $this->router, $this->twig, $this->factory, 'name');
     }
 
     public function testAddUnexpectedType(): void

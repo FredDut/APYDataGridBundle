@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\Container;
 use Twig\Environment ;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * A builder for creating Grid instances.
@@ -21,6 +23,10 @@ class GridBuilder extends GridConfigBuilder implements GridBuilderInterface
      * The container.
      */
     private Container $container;
+
+    private EntityManager $doctrine;
+
+    private RequestStack $request_stack;
 
     private AuthorizationCheckerInterface $securityContext;
 
@@ -48,10 +54,12 @@ class GridBuilder extends GridConfigBuilder implements GridBuilderInterface
      * @param string               $name      The name of the grid
      * @param array                $options   The options of the grid
      */
-    public function __construct(Container $container, AuthorizationCheckerInterface $securityContext, RouterInterface $router, Environment $twig, GridFactoryInterface $factory, $name, array $options = [])
+    public function __construct(Container $container, EntityManager $doctrine, RequestStack $request_stack, AuthorizationCheckerInterface $securityContext, RouterInterface $router, Environment $twig, GridFactoryInterface $factory, $name, array $options = [])
     {
         parent::__construct($name, $options);
         $this->router = $router;
+        $this->request_stack = $request_stack;
+        $this->doctrine = $doctrine;
         $this->container = $container;
         $this->factory = $factory;
         $this->securityContext = $securityContext;
@@ -115,7 +123,7 @@ class GridBuilder extends GridConfigBuilder implements GridBuilderInterface
     {
         $config = $this->getGridConfig();
 
-        $grid = new Grid($this->container, $this->securityContext, $this->router, $this->twig, $config->getName(), $config);
+        $grid = new Grid($this->container, $this->doctrine, $this->router,  $this->request_stack, $this->securityContext, $this->twig, $config->getName(), $config);
 
         foreach ($this->columns as $column) {
             $grid->addColumn($column);
