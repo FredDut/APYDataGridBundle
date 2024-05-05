@@ -12,15 +12,15 @@
 
 namespace APY\DataGridBundle\Grid\Mapping;
 
-/**
- * @Annotation
- */
+use Attribute;
+
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_CLASS)]
 class Column
 {
     protected $metadata;
     protected $groups;
 
-    public function __construct($metadata)
+    public function __construct(?string ...$metadata)
     {
         $this->metadata = $metadata;
         $this->groups = isset($metadata['groups']) ? (array) $metadata['groups'] : ['default'];
@@ -28,6 +28,7 @@ class Column
 
     public function getMetadata()
     {
+
         return $this->metadata;
     }
 

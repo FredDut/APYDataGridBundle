@@ -12,9 +12,10 @@
 
 namespace APY\DataGridBundle\Grid\Mapping;
 
-/**
- * @Annotation
- */
+use Attribute;
+
+#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS)]
+
 class Source
 {
     protected $columns;
@@ -23,13 +24,13 @@ class Source
     protected $groups;
     protected $groupBy;
 
-    public function __construct($metadata = [])
+    public function __construct(?string ...$metadata)
     {
         $this->columns = (isset($metadata['columns']) && $metadata['columns'] != '') ? array_map('trim', explode(',', $metadata['columns'])) : [];
         $this->filterable = $metadata['filterable'] ?? true;
         $this->sortable = $metadata['sortable'] ?? true;
-        $this->groups = (isset($metadata['groups']) && $metadata['groups'] != '') ? (array) $metadata['groups'] : ['default'];
-        $this->groupBy = (isset($metadata['groupBy']) && $metadata['groupBy'] != '') ? (array) $metadata['groupBy'] : [];
+        $this->groups = (isset($metadata['groups']) && $metadata['groups'] != '') ? array_map('trim', explode(',', $metadata['groups'])) : ['default'];
+        $this->groupBy = (isset($metadata['groupBy']) && $metadata['groupBy'] != '') ? array_map('trim', explode(',', $metadata['groupBy'])) : [];
     }
 
     public function getColumns()
@@ -64,7 +65,7 @@ class Source
 
     /**
      * Get the value of sortable
-     */ 
+     */
     public function getSortable()
     {
         return $this->sortable;

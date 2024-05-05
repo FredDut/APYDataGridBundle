@@ -15,7 +15,8 @@ namespace APY\DataGridBundle\Grid\Mapping\Driver;
 use APY\DataGridBundle\Grid\Mapping\Column as Column;
 use APY\DataGridBundle\Grid\Mapping\Source as Source;
 
-class Annotation implements DriverInterface
+
+class Attribute implements DriverInterface
 {
     protected $columns;
     protected $filterable;
@@ -24,11 +25,12 @@ class Annotation implements DriverInterface
     protected $loaded;
     protected $groupBy;
 
-    protected $reader;
 
-    public function __construct($reader)
+
+
+    public function __construct()
     {
-        $this->reader = $reader;
+
         $this->columns = $this->fields = $this->loaded = $this->groupBy = $this->filterable = $this->sortable = [];
     }
 
@@ -66,16 +68,25 @@ class Annotation implements DriverInterface
 
         while (!empty($reflectionCollection)) {
             $reflection = array_pop($reflectionCollection);
-
-            foreach ($this->reader->getClassAnnotations($reflection) as $class) {
-                $this->getMetadataFromClass($className, $class, $group);
+            $attributes = $reflection->getAttributes(Source::class);
+            foreach ($attributes as $attribute) {
+                $instAttribute = $attribute->newInstance();
+                $this->getMetadataFromClass($className, $instAttribute, $group);
             }
-
+            //Column attribute for a class
+            $attributes = $reflection->getAttributes(Column::class);
+            foreach ($attributes as $attribute) {
+                $instAttribute = $attribute->newInstance();
+                $this->getMetadataFromClass($className, $instAttribute, $group);
+            }
+            //Column attribute for a property
             foreach ($reflection->getProperties() as $property) {
                 $this->fields[$className][$group][$property->getName()] = [];
+                $attributesProperty = $property->getAttributes(Column::class);
 
-                foreach ($this->reader->getPropertyAnnotations($property) as $class) {
-                    $this->getMetadataFromClassProperty($className, $class, $property->getName(), $group);
+                foreach ($attributesProperty as $attributeProperty) {
+                    $instAttributeProperty = $attributeProperty->newInstance();
+                    $this->getMetadataFromClassProperty($className, $instAttributeProperty, $property->getName(), $group);
                 }
             }
         }
@@ -105,17 +116,17 @@ class Annotation implements DriverInterface
             $metadata = $class->getMetadata();
 
             if (isset($metadata['id']) && $name !== null) {
-                throw new \Exception(sprintf('Parameter `id` can\'t be used in annotations for property `%s`, please remove it from class %s', $name, $className));
+                throw new \Exception(sprintf('Parameter `id` can\'t be used in attributes for property `%s`, please remove it from class %s', $name, $className));
             }
 
-            if ($name === null) { // Class Column annotation
+            if ($name === null) { // Class Column attributes
                 if (isset($metadata['id'])) {
                     $metadata['source'] = false;
                     $this->fields[$className][$group][$metadata['id']] = [];
                 } else {
-                    throw new \Exception(sprintf('Missing parameter `id` in annotations for extra column of class %s', $className));
+                    throw new \Exception(sprintf('Missing parameter `id` in attributes for extra column of class %s', $className));
                 }
-            } else { // Property Column annotation
+            } else { // Property Column attributes
                 // Relationship handle
                 if (isset($metadata['field']) && (strpos($metadata['field'], '.') !== false || strpos($metadata['field'], ':') !== false)) {
                     $metadata['id'] = $metadata['field'];
@@ -129,9 +140,11 @@ class Annotation implements DriverInterface
                 }
             }
 
-            // Check the group of the annotation and don't override if an annotation with the group have already been defined
-            if (isset($metadata['groups']) && !in_array($group, (array) $metadata['groups'])
-                || isset($this->fields[$className][$group][$metadata['id']]['groups'])) {
+            // Check the group of the attributes and don't override if an attribute with the group have already been defined
+            if (
+                isset($metadata['groups']) && !in_array($group, (array) $metadata['groups'])
+                || isset($this->fields[$className][$group][$metadata['id']]['groups'])
+            ) {
                 return;
             }
 

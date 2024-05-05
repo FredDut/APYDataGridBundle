@@ -101,13 +101,14 @@ class Metadata
                 throw new \Exception(sprintf('No suitable Column Extension found for column type: %s', $type));
             }
         }
-
+        // print('columns ');
+        // print(var_dump($columns));
         return $columns;
     }
 
     /**
      * Get the value of fieldsMappings
-     */ 
+     */
     public function getFieldsMappings()
     {
         return $this->fieldsMappings;
