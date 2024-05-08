@@ -1,7 +1,7 @@
 Column Annotation for a class
 =============================
 
-The Column annotation for a class allows to add a non-mapped source column.
+The Column attribute for a class allows to add a non-mapped source column.
 
 Example:
 ```php
@@ -11,8 +11,8 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
 
 /**
  * Add custom columns to the grid
- * @GRID\Column(id="myColumn", size="120", type="text")
- */
+ * */
+ #[@GRID\Column(id: "myColumn", size: "120", type: "text")]
 class Product
 {
 
@@ -32,4 +32,4 @@ class Product
 |visible|boolean|true|true or false|Sets the visibilty of the column|
 |align|string|left|left, right or center|Sets the text alignment with a CSS class|
 |role|string||A symfony role|Sets the visiblity of the column to false if the access isn't granted for the defined role|
-|groups|string<br />or<br />array|Example: groups="group1",<br/>groups={"group1"}, groups={"group1", "group2"}||Use this attribute to define more than one configuration for an Entity/Document. <br />If no groups is defined, the annotation is attributed for all groups.<br />$source = new Entity('MyProjectMyBundle:MyEntity', 'my_group');|
+|groups|string<br />or<br />array|Example: groups: "group1",<br/>groups: ["group1"], groups: ["group1", "group2"]||Use this attribute to define more than one configuration for an Entity/Document. <br />If no groups is defined, the attribute is attributed for all groups.<br />$source = new Entity('MyProjectMyBundle:MyEntity', 'my_group');|

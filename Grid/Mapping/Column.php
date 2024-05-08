@@ -20,7 +20,7 @@ class Column
     protected $metadata;
     protected $groups;
 
-    public function __construct(?string ...$metadata)
+    public function __construct(...$metadata)
     {
         $this->metadata = $metadata;
         $this->groups = isset($metadata['groups']) ? (array) $metadata['groups'] : ['default'];

@@ -779,14 +779,16 @@ abstract class Column
         // @see http://www.doctrine-project.org/jira/browse/DDC-1857
         // @see http://www.doctrine-project.org/jira/browse/DDC-1858
         if ($this->hasDQLFunction() && version_compare(DoctrineVersion::VERSION, '2.5') < 0) {
-            return array_intersect($this->operators, [self::OPERATOR_EQ,
+            return array_intersect($this->operators, [
+                self::OPERATOR_EQ,
                 self::OPERATOR_NEQ,
                 self::OPERATOR_LT,
                 self::OPERATOR_LTE,
                 self::OPERATOR_GT,
                 self::OPERATOR_GTE,
                 self::OPERATOR_BTW,
-                self::OPERATOR_BTWE, ]);
+                self::OPERATOR_BTWE,
+            ]);
         }
 
         return $this->operators;
@@ -1065,7 +1067,7 @@ abstract class Column
 
     /**
      * Get the value of params
-     */ 
+     */
     public function getParams()
     {
         return $this->params;
@@ -1073,7 +1075,7 @@ abstract class Column
 
     /**
      * Get the value of callback
-     */ 
+     */
     public function getCallback()
     {
         return $this->callback;
@@ -1081,7 +1083,7 @@ abstract class Column
 
     /**
      * Get the value of authorizationChecker
-     */ 
+     */
     public function getAuthorizationChecker()
     {
         return $this->authorizationChecker;

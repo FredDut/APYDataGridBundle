@@ -11,29 +11,22 @@ You have 5 basic aggregate functions: `count`, `avg`, `min`, `max` and `sum` but
 ```php
 <?php
 ...
-/**
- * @GRID\Source(columns="id, sales.id:count, sales.price:avg, sales.price:sum, sales.price:max, sales.price:min, other:count", groupBy={"id", "sales.price:avg"})
- */
+#[GRID\Source(columns: "id, sales.id:count, sales.price:avg, sales.price:sum, sales.price:max, sales.price:min, other:count", groupBy: ["id", "sales.price:avg"])]
 class Article {
 ...
     protected $id;
 
-    /**
-     * @ORM\OneToMany(...)
+    #[ORM\OneToMany(...)]
      * 
-     * @Grid\Column(field="sales.id:count", title="Number of sales")
-     * @Grid\Column(field="sales.price:avg", title="Average price")
-     * @Grid\Column(field="sales.price:min", title="Minimum price")
-     * @Grid\Column(field="sales.price:max", title="Maximum price")
-     * @Grid\Column(field="sales.price:sum", title="Profit")
-     */
+    #[Grid\Column(field:"sales.id:count", title:"Number of sales")]
+    #[Grid\Column(field:"sales.price:avg", title:"Average price")]
+    #[Grid\Column(field:"sales.price:min", title:"Minimum price")]
+    #[Grid\Column(field:"sales.price:max", title:"Maximum price")]
+    #[Grid\Column(field:"sales.price:sum", title:"Profit")]
     protected $sales;
 
-    /**
-     * @ORM\Column(...)
-     *
-     * @Grid\Column(field="other:count", title="Other")
-     */
+    #[ORM\Column(...)]
+    #[Grid\Column(field: "other:count", title: "Other")]
     protected $other;
 ...
 }
@@ -48,9 +41,7 @@ class Sale
 
     protected $price;
 
-    /**
-     * @ORM\ManyToOne(...)
-     */
+    #[ORM\ManyToOne(...)]
     protected $article;	
 ...
 }
@@ -70,27 +61,19 @@ Simple parameters are supported by the bundle.
 ```php
 <?php
 ...
-/**
- * @GRID\Source(columns="id, sales.id:countIf:4, sales.id:count:distinct, sales.name:otherFunction:example, other:count:distinct")
- */
+#[GRID\Source(columns: "id, sales.id:countIf:4, sales.id:count:distinct, sales.name:otherFunction:example, other:count:distinct")]
 class Article {
 ...
     protected $id;
     
-    /**
-     * @ORM\OneToMany(...)
-     * 
-     * @Grid\Column(field="sales.id:countIf:4")
-     * @Grid\Column(field="sales.name:count:distinct")
-     * @Grid\Column(field="sales.name:otherFunction:string")
-     */
+    #[ORM\OneToMany(...)]
+    #[Grid\Column(field: "sales.id:countIf:4")]
+    #[Grid\Column(field: "sales.name:count:distinct")]
+    #[Grid\Column(field: "sales.name:otherFunction:string")]
     protected $sales;
 
-    /**
-     * @ORM\Column(...)
-     *
-     * @Grid\Column(field="other:count:distinct", title="Other")
-     */
+    #[ORM\Column(...)]
+    #[Grid\Column(field: "other:count:distinct", title: "Other")]
     protected $other;
 ...
 }

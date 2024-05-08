@@ -57,15 +57,9 @@
         <service id="%grid.manager.class%" alias="grid.manager" public="true">
         </service>
 
-        <service id="grid.metadata.driver.attribute" class="APY\DataGridBundle\Grid\Mapping\Driver\Attribute">
-           
+        <service id="grid.metadata.driver.attribute" class="APY\DataGridBundle\Grid\Mapping\Driver\Attribute">           
         </service>
-        <!-- <service id="AntonDPerera\PHPAttributesReader\AttributesReader" class="AntonDPerera\PHPAttributesReader\AttributesReader" shared="false" public="true">
-           
-        </service> -->
-<!-- <service id="APY\DataGridBundle\Grid\Mapping\Driver\Attribute" public="true">  -->
-    <!-- <argument type="service" id="AntonDPerera\PHPAttributesReader\AttributesReader" /> -->
-    <!-- </service> -->
+
         <service id="grid.mapping.manager" class="APY\DataGridBundle\Grid\Mapping\Metadata\Manager" shared="false" public="true">
             <argument type="service" id="form.factory"/>
             <call method="addDriver">

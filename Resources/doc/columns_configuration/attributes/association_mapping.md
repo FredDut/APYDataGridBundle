@@ -6,22 +6,17 @@ Example of an association with multi related fields on the same property.
 ```php
 <?php
 ...
-/**
- * @GRID\Source(columns="id, type, category.children, category.name")
- */
+#[GRID\Source(columns: "id, type, category.children, category.name")]
 class Product
 {
     protected $id;
 
     protected $type;
 
-    /**
-     * @ORM\OneToMany(...)
-     *
-     * @GRID\Column(field="category.name", title="Category Name")
-     * @GRID\Column(field="category.firstChild.name", title="Category first child")
-     * @GRID\Column(field="category.tags", type="array", title="Category tags")
-     */
+    #[ORM\OneToMany(...)]
+    #[GRID\Column(field: "category.name", title: "Category Name")]
+    #[GRID\Column(field: "category.firstChild.name", title: "Category first child")]
+    #[GRID\Column(field: "category.tags", type: "array", title: "Category tags")]
     protected $category;
 ...
 }
@@ -38,16 +33,12 @@ class Category
 
     protected $name;
 
-    /**
-     * @ORM\OneToOne(...)
-     */
+    #[ORM\OneToOne(...)]
     protected $firstChild;
 
     protected $tags;
 
-    /**
-     * @ORM\ManyToOne(...)
-     */
+    #[ORM\ManyToOne(...)]
     protected $product;
 ...
 }
@@ -64,11 +55,8 @@ class Product
 
     protected $type;
 
-    /**
-     * @ORM\OneToMany(...)
-     *
-     * @GRID\Column(field="category.name", title="Category Name", joinType="inner")
-     */
+    #[ORM\OneToMany(...)]
+    #[GRID\Column(field: "category.name", title: "Category Name", joinType: "inner")]
     protected $category;
 ...
 }
@@ -85,4 +73,4 @@ A column on a mapped field has the same attributes of a normal field and have tw
 |joinType|string||inner|Specify the join type for the related records (E.G. 'inner' for an inner join|
 
 **Note**: The default title of a related field is the name of the field.
-`@Grid\Column(field="category.name") => title = "category.name"`
+`Grid\Column(field: "category.name") => title: "category.name"`

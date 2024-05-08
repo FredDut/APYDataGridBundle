@@ -80,19 +80,15 @@ namespace MyProject\MyBundle\Entity
 use Doctrine\ORM\Mapping as ORM;
 use APY\DataGridBundle\Grid\Mapping as GRID;
 
-/**
- * @GRID\Source(columns="id, my_datetime")
- */
+
+#[GRID\Source(columns: "id, my_datetime")]
 class MyEntity
 {
-	/*
-	 * @ORM\Column(type="integer")
-	 */
+	#[ORM\Column(type: "integer")]
 	protected $id;
 
-	/*
-	 * @ORM\Column(type="datetime")
-	 */
+	
+	#[ORM\Column(type: "datetime")]
 	protected $my_datetime;
 }
 ```
