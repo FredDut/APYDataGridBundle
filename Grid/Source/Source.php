@@ -491,9 +491,14 @@ abstract class Source implements DriverInterface
                 // Dynamic from query or not ?
                 $item = ($selectFrom === 'source') ? $this->data : $this->items;
 
-                $values = [];
-                foreach ($item as $row) {
-                    $value = $row[$column->getField()];
+		$values = [];
+		foreach ($item as $row) {
+			$value=null;
+		    if (!is_object($row)) {
+			    $value = $row[$column->getField()];
+		    } elseif (property_exists($row,$column->getField())) {
+			    $value = $row->$column->getField();
+		    }
 
                     switch ($column->getType()) {
                         case 'number':
