@@ -40,7 +40,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * @var bool
      */
-    protected $persistence;
+    protected $persistence = false;
 
     /**
      * @var int

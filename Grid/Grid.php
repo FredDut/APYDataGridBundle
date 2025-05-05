@@ -140,8 +140,8 @@ class Grid implements GridInterface
  
     protected string $prefixTitle = '';
 
-  
-    protected bool$persistence = false;
+
+    protected bool $persistence = false;
 
 
     protected bool $newSession = false;
@@ -1549,7 +1549,7 @@ class Grid implements GridInterface
      */
     public function setPersistence($persistence)
     {
-        $this->persistence = $persistence;
+        $this->persistence = (bool) $persistence;
 
         return $this;
     }

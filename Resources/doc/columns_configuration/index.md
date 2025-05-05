@@ -2,11 +2,11 @@
 
 ## Annotations
 
-* [Source Annotation](annotations/source_annotation.md)
-* [Column Annotation for a property](annotations/column_annotation_property.md)
-* [Column Annotation for a class](annotations/column_annotation_class.md)
-* [ORM Association Mapping](annotations/association_mapping.md)
-* [DQL Functions](annotations/dql_function.md)
+* [Source Annotation](attributes/source_attribute.md)
+* [Column Annotation for a property](attributes/column_attribute_property.md)
+* [Column Annotation for a class](attributes/column_attribute_class.md)
+* [ORM Association Mapping](aattributes/association_mapping.md)
+* [DQL Functions](attributes/dql_function.md)
 	
 ## Column Types References
 
